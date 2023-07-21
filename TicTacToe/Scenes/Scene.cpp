@@ -74,6 +74,26 @@ void Scene::SortGos()
 		});
 }
 
+sf::Vector2f Scene::ScreenToWorldPos(sf::Vector2f screenPos)
+{
+	return window.mapPixelToCoords((sf::Vector2i)screenPos, worldView);
+}
+
+sf::Vector2f Scene::ScreenToUiPos(sf::Vector2f screenPos)
+{
+	return window.mapPixelToCoords((sf::Vector2i)screenPos, uiView);
+}
+
+sf::Vector2f Scene::WorldPosToScreen(sf::Vector2f worldPos)
+{
+	return (sf::Vector2f)window.mapCoordsToPixel(worldPos, worldView);
+}
+
+sf::Vector2f Scene::UiPosPosToScreen(sf::Vector2f uiPos)
+{
+	return (sf::Vector2f)window.mapCoordsToPixel(uiPos, uiView);
+}
+
 void Scene::Enter()
 {
 	RESOURCE_MGR.Load(resources);

@@ -30,7 +30,7 @@ void SceneGame::Init()
 
 	sf::Vector2f tileWorldSize = { 50.f,50.f };
 	sf::Vector2f tileTexSize = { 50.f, 50.f };
-	background = CreateBackGround({ 10,10 }, { 50.f,50.f }, { 50.f,50.f }, "graphics/tile.png");
+	background = CreateBackGround({ 5,5 }, { 50.f,50.f }, { 50.f,50.f }, "graphics/tile.png");
 	AddGo(background);
 
 	for (auto go : gameObjects)
@@ -39,7 +39,7 @@ void SceneGame::Init()
 	}
 
 	background->sortLayer = -1;
-	background->SetOrigin(Origins::MC);
+	background->SetOrigin(Origins::TL);
 	background->SetPosition(0.f, 0.f);
 
 	wallBounds = background->vertexArray.getBounds();
@@ -92,7 +92,7 @@ VertexArrayGo* SceneGame::CreateBackGround(sf::Vector2i size, sf::Vector2f tileS
 	sf::Vector2f startPos = { 0,0 }; //½ÃÀÛ ÁÂÇ¥
 	sf::Vector2f offsets[4] =
 	{
-		//Á¤Á¡ÀÇ ÁÂÇ¥
+		//Á¤Á¡(²ÀÁþÁ¡)ÀÇ ÁÂÇ¥
 		{0.f, 0.f},
 		{tileSize.x, 0.f},
 		{tileSize.x, tileSize.y},

@@ -6,6 +6,7 @@
 #include <list>
 #include <random>
 #include <tuple>
+#include <functional>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
