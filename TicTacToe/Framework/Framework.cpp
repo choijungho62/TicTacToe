@@ -56,6 +56,13 @@ void Framework::Run()
             case sf::Event::GainedFocus:
                 break;
 
+                case sf::Event::MouseButtonPressed: // 클릭 이벤트 처리
+				if (event.mouseButton.button == sf::Mouse::Left)
+				{
+					sf::Vector2f clickPosition = window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+					SCENE_MGR.GetCurrScene()->HandleClickEvent(clickPosition);
+				}
+				break;
             };
             INPUT_MGR.UpdateEvent(event);
         }

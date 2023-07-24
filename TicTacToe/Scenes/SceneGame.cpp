@@ -10,6 +10,8 @@
 SceneGame::SceneGame() : Scene(SceneId::Game)
 {
 	resources.push_back(std::make_tuple(ResourceTypes::Texture, "graphics/tile.png"));
+	resources.push_back(std::make_tuple(ResourceTypes::Texture, "graphics/o.png"));
+	resources.push_back(std::make_tuple(ResourceTypes::Texture, "graphics/x.png"));
 }
 
 SceneGame::~SceneGame()
@@ -132,6 +134,32 @@ VertexArrayGo* SceneGame::CreateBackGround(sf::Vector2i size, sf::Vector2f tileS
 		currPos.y += tileSize.y;
 	}
 	return background;
+}
+
+void SceneGame::HandleClickEvent(sf::Vector2f clickPosition)
+{
+	// 타일맵 이미지를 클릭한 위치를 확인하여 해당 타일의 인덱스를 계산
+	int tileSize = 50; // 타일의 크기
+	int xIndex = static_cast<int>(clickPosition.x / tileSize);
+	int yIndex = static_cast<int>(clickPosition.y / tileSize);
+
+	int mapWidth = 5; // 타일맵의 가로 크기 (타일 개수)
+	int mapHeight = 5; // 타일맵의 세로 크기 (타일 개수)
+
+	
+	if (xIndex >= 0 && xIndex < mapWidth && yIndex >= 0 && yIndex < mapHeight)
+	{
+		int texIndex = Utils::RandomRange(0, 3);
+
+		int tileIndex = yIndex * mapWidth + xIndex;
+
+		for (int k = 0; k < 4; k++)
+		{
+			int vertexIndex = tileIndex * 4 + k;
+			background->vertexArray[vertexIndex].texCoords.y = texIndex * 50;
+		}
+		
+	}
 }
 
 VertexArrayGo* SceneGame::GetBackground()

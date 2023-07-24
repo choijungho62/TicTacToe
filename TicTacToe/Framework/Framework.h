@@ -13,8 +13,8 @@ protected:
 	sf::RenderWindow window; //화면
 	sf::Clock clock; //시간
 
-	int screenWidth = 1280;
-	int screenHeight = 720;
+	int screenWidth = 350;
+	int screenHeight = 350;
 	std::string title = "Tic Tac Toe!";
 
 
