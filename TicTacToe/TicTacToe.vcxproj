@@ -153,6 +153,7 @@
     <ClCompile Include="Gameobjects\SpriteGo.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Gameobjects\UiButton.cpp" />
     <ClCompile Include="Gameobjects\VertexArrayGo.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -179,6 +180,7 @@
     <ClInclude Include="Framework\SceneMgr.h" />
     <ClInclude Include="Gameobjects\GameObject.h" />
     <ClInclude Include="Gameobjects\SpriteGo.h" />
+    <ClInclude Include="Gameobjects\UiButton.h" />
     <ClInclude Include="Gameobjects\VertexArrayGo.h" />
     <ClInclude Include="Global\Defines.h" />
     <ClInclude Include="Global\Singleton.h" />
