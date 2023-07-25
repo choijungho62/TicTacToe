@@ -149,7 +149,8 @@ VertexArrayGo* SceneGame::CreateBackGround(sf::Vector2i size, sf::Vector2f tileS
 void SceneGame::HandleClickEvent(sf::Vector2f clickPosition)
 {
 	// 타일맵 이미지를 클릭한 위치를 확인하여 해당 타일의 인덱스를 계산
-	int tileSize = 50; // 타일의 크기
+
+	int tileSize = 50; // 타일(이미지)의 크기
 	int xIndex = static_cast<int>(clickPosition.x / tileSize);
 	int yIndex = static_cast<int>(clickPosition.y / tileSize);
 
@@ -195,7 +196,7 @@ void SceneGame::HandleClickEvent(sf::Vector2f clickPosition)
 				background->vertexArray[vertexIndex].texCoords = texOffsets[k];
 			}
 
-			// 차례를 변경하여 1P과 2P가 번갈아가면서 클릭할 수 있도록 함
+			// 차례를 변경하여 1P와 2P가 번갈아가면서 클릭할 수 있도록 함
 			playerOneTurn = !playerOneTurn;
 		}
 	}
