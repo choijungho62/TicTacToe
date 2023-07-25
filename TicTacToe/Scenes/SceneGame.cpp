@@ -47,6 +47,18 @@ void SceneGame::Init()
 	wallBounds.height -= tileWorldSize.y * 2.f;
 	wallBounds.left += tileWorldSize.x;
 	wallBounds.top += tileWorldSize.y;
+
+	// tileStates 배열을 초기화 모든 타일의 상태를 false로 설정
+	tileStates.clear();
+	for (int i = 0; i < 5; i++)
+	{
+		std::vector<bool> row;
+		for (int j = 0; j < 5; j++)
+		{
+			row.push_back(false);
+		}
+		tileStates.push_back(row);
+	}
 }
 
 void SceneGame::Release()
@@ -147,28 +159,44 @@ void SceneGame::HandleClickEvent(sf::Vector2f clickPosition)
 	// 클릭한 타일이 타일맵 범위 내에 있는지 확인
 	if (xIndex >= 0 && xIndex < mapWidth && yIndex >= 0 && yIndex < mapHeight)
 	{
-		// 새로운 이미지를 표시하기 위한 텍스처 좌표 설정
-		sf::Vector2f texOffsets[4] =
+		// 클릭한 타일이 이미 클릭된 상태인지 검사
+		if (!tileStates[yIndex][xIndex])
 		{
-			//정점의 텍스처 좌표, O 표시
-			{0.f, 50.f},
-			{50.f, 50.f},
-			{50.f, 100.f},
-			{0.f, 100.f}
-		};
+			// 클릭한 타일의 상태를 변경
+			tileStates[yIndex][xIndex] = true;
 
-		// 클릭한 타일의 인덱스를 계산
-		int tileIndex = yIndex * mapWidth + xIndex;
+			// 플레이어 차례에 따라 표시할 이미지를 선택합니다.
+			sf::Vector2f texOffsets[4];
+			if (playerOneTurn) // 1P의 차례인 경우
+			{
+				// 플레이어 1P인 "X" 표시 이미지
+				texOffsets[0] = { 0.f, 100.f };
+				texOffsets[1] = { 50.f, 100.f };
+				texOffsets[2] = { 50.f, 150.f };
+				texOffsets[3] = { 0.f, 150.f };
+			}
+			else // 2P의 차례인 경우
+			{
+				// 플레이어 2P인 "O" 표시 이미지
+				texOffsets[0] = { 0.f, 50.f };
+				texOffsets[1] = { 50.f, 50.f };
+				texOffsets[2] = { 50.f, 100.f };
+				texOffsets[3] = { 0.f, 100.f };
+			}
 
-		// 클릭한 타일을 변경
-		for (int k = 0; k < 4; k++)
-		{
-			int vertexIndex = tileIndex * 4 + k;
+			// 클릭한 타일의 인덱스를 계산
+			int tileIndex = yIndex * mapWidth + xIndex;
 
-			// o타일이 그려진 정점 좌표
-			// {0. 50}, {50. 50},
-			// {0. 100}, {50, 100}
-			background->vertexArray[vertexIndex].texCoords = texOffsets[k];
+			// 클릭한 타일을 변경
+			for (int k = 0; k < 4; k++)
+			{
+				int vertexIndex = tileIndex * 4 + k;
+
+				background->vertexArray[vertexIndex].texCoords = texOffsets[k];
+			}
+
+			// 차례를 변경하여 1P과 2P가 번갈아가면서 클릭할 수 있도록 함
+			playerOneTurn = !playerOneTurn;
 		}
 	}
 }
