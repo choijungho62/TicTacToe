@@ -9,9 +9,7 @@
 
 SceneGame::SceneGame() : Scene(SceneId::Game)
 {
-	resources.push_back(std::make_tuple(ResourceTypes::Texture, "graphics/tile.png"));
-	resources.push_back(std::make_tuple(ResourceTypes::Texture, "graphics/o.png"));
-	resources.push_back(std::make_tuple(ResourceTypes::Texture, "graphics/x.png"));
+	resources.push_back(std::make_tuple(ResourceTypes::Texture, "graphics/tile2.png"));
 }
 
 SceneGame::~SceneGame()
@@ -32,7 +30,7 @@ void SceneGame::Init()
 
 	sf::Vector2f tileWorldSize = { 50.f,50.f };
 	sf::Vector2f tileTexSize = { 50.f, 50.f };
-	background = CreateBackGround({ 5,5 }, { 50.f,50.f }, { 50.f,50.f }, "graphics/tile.png");
+	background = CreateBackGround({ 5,5 }, { 50.f,50.f }, { 50.f,50.f }, "graphics/tile2.png");
 	AddGo(background);
 
 	for (auto go : gameObjects)
@@ -113,11 +111,11 @@ VertexArrayGo* SceneGame::CreateBackGround(sf::Vector2i size, sf::Vector2f tileS
 	{
 		for (int j = 0; j < size.x; j++)
 		{
-			int texIndex = 3;
+			int texIndex = 0;
 			if (i != 0 && i != size.y - 1 && j != 0 && j != size.x - 1)
 				//외곽이 아닐 때, 윗줄, 아랫줄, 왼쪽, 오른쪽 순서로 외곽 검사
 			{
-				texIndex = Utils::RandomRange(0, 3); //타일 3개 중 1개 랜덤으로
+				texIndex = 0;
 			}
 
 			int tileIndex = size.x * i + j; //2차원 배열의 인덱스를 1차원 배열 인덱스로 변경
@@ -148,15 +146,27 @@ void SceneGame::HandleClickEvent(sf::Vector2f clickPosition)
 
 	// 클릭한 타일이 타일맵 범위 내에 있는지 확인
 	if (xIndex >= 0 && xIndex < mapWidth && yIndex >= 0 && yIndex < mapHeight)
-	{	//타일 3개 중 1개 랜덤으로
-		int texIndex = Utils::RandomRange(0, 3);
+	{
+		// 새로운 이미지를 표시하기 위한 텍스처 좌표 설정
+		sf::Vector2f texOffsets[4] =
+		{
+			//정점의 텍스처 좌표, O 표시
+			{0.f, 50.f},
+			{50.f, 50.f},
+			{50.f, 100.f},
+			{0.f, 100.f}
+		};
+
 		// 클릭한 타일의 인덱스를 계산
 		int tileIndex = yIndex * mapWidth + xIndex;
+
 		// 클릭한 타일을 변경
 		for (int k = 0; k < 4; k++)
 		{
 			int vertexIndex = tileIndex * 4 + k;
-			background->vertexArray[vertexIndex].texCoords.y = texIndex * 50;
+
+			// {0.50} , {50. 50}, {0. 100}, {50, 100}
+			background->vertexArray[vertexIndex].texCoords = texOffsets[k];
 		}
 	}
 }
