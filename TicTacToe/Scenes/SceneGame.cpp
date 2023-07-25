@@ -165,7 +165,9 @@ void SceneGame::HandleClickEvent(sf::Vector2f clickPosition)
 		{
 			int vertexIndex = tileIndex * 4 + k;
 
-			// {0.50} , {50. 50}, {0. 100}, {50, 100}
+			// o타일이 그려진 정점 좌표
+			// {0. 50}, {50. 50},
+			// {0. 100}, {50, 100}
 			background->vertexArray[vertexIndex].texCoords = texOffsets[k];
 		}
 	}
