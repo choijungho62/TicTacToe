@@ -146,19 +146,18 @@ void SceneGame::HandleClickEvent(sf::Vector2f clickPosition)
 	int mapWidth = 5; // 타일맵의 가로 크기 (타일 개수)
 	int mapHeight = 5; // 타일맵의 세로 크기 (타일 개수)
 
-	
+	// 클릭한 타일이 타일맵 범위 내에 있는지 확인
 	if (xIndex >= 0 && xIndex < mapWidth && yIndex >= 0 && yIndex < mapHeight)
-	{
+	{	//타일 3개 중 1개 랜덤으로
 		int texIndex = Utils::RandomRange(0, 3);
-
+		// 클릭한 타일의 인덱스를 계산
 		int tileIndex = yIndex * mapWidth + xIndex;
-
+		// 클릭한 타일을 변경
 		for (int k = 0; k < 4; k++)
 		{
 			int vertexIndex = tileIndex * 4 + k;
 			background->vertexArray[vertexIndex].texCoords.y = texIndex * 50;
 		}
-		
 	}
 }
 
