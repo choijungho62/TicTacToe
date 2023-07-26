@@ -2,12 +2,14 @@
 #include "Scene.h"
 
 class VertexArrayGo;
+class TextGo;
 
 class SceneGame : public Scene
 {
 protected:
 
 	VertexArrayGo* background;
+	TextGo* resultText;
 	sf::FloatRect wallBounds;
 	bool playerOneTurn = true; // 1P = X, 2P = O
 	std::vector<std::vector<bool>> tileStates; // 타일의 클릭 상태를 저장하는 2차원 배열

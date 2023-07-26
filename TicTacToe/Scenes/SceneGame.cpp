@@ -6,10 +6,12 @@
 #include "GameObject.h"
 #include "Framework.h"
 #include "VertexArrayGo.h"
+#include "TextGo.h"
 
 SceneGame::SceneGame() : Scene(SceneId::Game)
 {
 	resources.push_back(std::make_tuple(ResourceTypes::Texture, "graphics/tile2.png"));
+	resources.push_back(std::make_tuple(ResourceTypes::Font, "fonts/KOMIKAP_.ttf"));
 	isGameOver = false;
 }
 
@@ -43,6 +45,15 @@ void SceneGame::Init()
 	wallBounds.height -= tileWorldSize.y * 2.f;
 	wallBounds.left += tileWorldSize.x;
 	wallBounds.top += tileWorldSize.y;
+
+	resultText = new TextGo("fonts/KOMIKAP_.ttf", "resultText");
+	resultText->text.setCharacterSize(30);
+	resultText->text.setFillColor(sf::Color::White);
+	resultText->SetOrigin(Origins::MC);
+	resultText->SetPosition(FRAMEWORK.GetWindowSize().x * 0.01, FRAMEWORK.GetWindowSize().y - 80);
+	resultText->sortLayer = 100;
+	resultText->SetActive(false);
+	AddGo(resultText);
 
 	// tileStates 배열을 초기화 모든 타일의 상태를 false로 설정
 	tileStates.clear();
@@ -89,7 +100,48 @@ void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
 
+	// 게임이 종료된 상태에서 Enter 누르면 재시작
+	if (isGameOver && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+	{
+		// 게임상태 재설정
+		isGameOver = false;
+		playerOneTurn = true;
+
+		// tileStates 배열 초기화
+		for (int i = 0; i < 5; i++)
+		{
+			for (int j = 0; j < 5; j++)
+			{
+				tileStates[i][j] = false;
+			}
+		}
+
+		// 보드판 초기화
+		sf::Vector2f texOffsets[4] = {
+			{0.f, 0.f},
+			{50.f, 0.f},
+			{50.f, 50.f},
+			{0.f, 50.f}
+		};
+
+		for (int y = 0; y < 5; y++)
+		{
+			for (int x = 0; x < 5; x++)
+			{
+				int tileIndex = y * 5 + x;
+				for (int k = 0; k < 4; k++)
+				{
+					int vertexIndex = tileIndex * 4 + k;
+					background->vertexArray[vertexIndex].texCoords = texOffsets[k];
+				}
+			}
+		}
+
+		// 결과 텍스트 끔
+		resultText->SetActive(false);
+	}
 }
+
 
 void SceneGame::Draw(sf::RenderWindow& window)
 {
@@ -318,19 +370,39 @@ bool SceneGame::CheckDraw()
 
 void SceneGame::ShowResult(int result)
 {
-	// 콘솔창 출력(임시)
+	 //콘솔창
+	 switch (result)
+	 {
+	 case 1:
+	     std::cout << "1P 승리!" << std::endl;
+	     break;
+	 case 2:
+	     std::cout << "2P 승리!" << std::endl;
+	     break;
+	 case 0:
+	     std::cout << "무승부!" << std::endl;
+	     break;
+	 default:
+	     std::cout << "알 수 없는 결과!" << std::endl;
+	 }
+
+	//폰트
 	switch (result)
 	{
 	case 1:
-		std::cout << "1P 승리!" << std::endl;
+		resultText->text.setString("1P Win!\n Press Enter To Restart");
 		break;
 	case 2:
-		std::cout << "2P 승리!" << std::endl;
+		resultText->text.setString("2P Win!\n Press Enter To Restart");
 		break;
 	case 0:
-		std::cout << "무승부!" << std::endl;
+		resultText->text.setString("Draw!\n Press Enter To Restart");
 		break;
 	default:
-		std::cout << "알 수 없는 결과!" << std::endl;
+		resultText->text.setString("unknown result!");
+		break;
 	}
+
+	resultText->SetActive(true);
 }
+
