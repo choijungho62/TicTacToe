@@ -10,6 +10,7 @@
 SceneGame::SceneGame() : Scene(SceneId::Game)
 {
 	resources.push_back(std::make_tuple(ResourceTypes::Texture, "graphics/tile2.png"));
+	isGameOver = false;
 }
 
 SceneGame::~SceneGame()
@@ -148,6 +149,9 @@ VertexArrayGo* SceneGame::CreateBackGround(sf::Vector2i size, sf::Vector2f tileS
 
 void SceneGame::HandleClickEvent(sf::Vector2f clickPosition)
 {
+	if (isGameOver) // 게임이 종료되었다면 더 이상 타일 클릭 이벤트를 받지 않음
+		return;
+
 	// 타일맵 이미지를 클릭한 위치를 확인하여 해당 타일의 인덱스를 계산
 
 	int tileSize = 50; // 타일(이미지)의 크기
@@ -196,6 +200,17 @@ void SceneGame::HandleClickEvent(sf::Vector2f clickPosition)
 				background->vertexArray[vertexIndex].texCoords = texOffsets[k];
 			}
 
+			if (CheckWin(playerOneTurn ? 1 : 2))
+			{
+				ShowResult(playerOneTurn ? 1 : 2);
+				isGameOver = true;
+			}
+			else if (CheckDraw())
+			{
+				ShowResult(0);
+				isGameOver = true;
+			}
+
 			// 차례를 변경하여 1P와 2P가 번갈아가면서 클릭할 수 있도록 함
 			playerOneTurn = !playerOneTurn;
 		}
@@ -205,4 +220,117 @@ void SceneGame::HandleClickEvent(sf::Vector2f clickPosition)
 VertexArrayGo* SceneGame::GetBackground()
 {
 	return background;
+}
+
+bool SceneGame::CheckWin(int player)
+{
+	// 가로 방향으로 승리 판정
+	for (int y = 0; y < 5; y++)
+	{
+		int consecutiveCount = 0;
+		for (int x = 0; x < 5; x++)
+		{
+			if (tileStates[y][x] && (playerOneTurn ? 1 : 2) == player)
+				consecutiveCount++;
+			else
+				consecutiveCount = 0;
+
+			if (consecutiveCount >= 5)
+				return true;
+		}
+	}
+
+	// 세로 방향으로 승리 판정
+	for (int x = 0; x < 5; x++)
+	{
+		int consecutiveCount = 0;
+		for (int y = 0; y < 5; y++)
+		{
+			if (tileStates[y][x] && (playerOneTurn ? 1 : 2) == player)
+				consecutiveCount++;
+			else
+				consecutiveCount = 0;
+
+			if (consecutiveCount >= 5)
+				return true;
+		}
+	}
+
+	// 대각선 방향으로 승리 판정
+	for (int y = 0; y < 5; y++)
+	{
+		for (int x = 0; x < 5; x++)
+		{
+			int consecutiveCount = 0;
+			for (int i = 0; i < 5; i++)
+			{
+				if (x + i >= 5 || y + i >= 5)
+					break;
+
+				if (tileStates[y + i][x + i] && (playerOneTurn ? 1 : 2) == player)
+					consecutiveCount++;
+				else
+					break;
+
+				if (consecutiveCount >= 5)
+					return true;
+			}
+		}
+	}
+
+	for (int y = 0; y < 5; y++)
+	{
+		for (int x = 0; x < 5; x++)
+		{
+			int consecutiveCount = 0;
+			for (int i = 0; i < 5; i++)
+			{
+				if (x + i >= 5 || y - i < 0)
+					break;
+
+				if (tileStates[y - i][x + i] && (playerOneTurn ? 1 : 2) == player)
+					consecutiveCount++;
+				else
+					break;
+
+				if (consecutiveCount >= 5)
+					return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool SceneGame::CheckDraw()
+{
+	for (int y = 0; y < 5; y++)
+	{
+		for (int x = 0; x < 5; x++)
+		{
+			if (!tileStates[y][x])
+				return false;
+		}
+	}
+
+	return true;
+}
+
+void SceneGame::ShowResult(int result)
+{
+	// 콘솔창 출력
+	switch (result)
+	{
+	case 1:
+		std::cout << "1P 승리!" << std::endl;
+		break;
+	case 2:
+		std::cout << "2P 승리!" << std::endl;
+		break;
+	case 0:
+		std::cout << "무승부!" << std::endl;
+		break;
+	default:
+		std::cout << "알 수 없는 결과!" << std::endl;
+	}
 }

@@ -30,5 +30,13 @@ public:
 	virtual void HandleClickEvent(sf::Vector2f clickPosition);
 
 	VertexArrayGo* GetBackground();
+
+	// 승리/패배/무승부를 판정하는 함수
+	bool CheckWin(int player);
+	bool CheckDraw();
+	void ShowResult(int result);
+
+	// 게임 종료여부 체크
+	bool isGameOver;
 };
 
