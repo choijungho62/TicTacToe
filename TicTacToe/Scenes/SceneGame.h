@@ -12,6 +12,9 @@ protected:
 	bool playerOneTurn = true; // 1P = X, 2P = O
 	std::vector<std::vector<bool>> tileStates; // 타일의 클릭 상태를 저장하는 2차원 배열
 
+	// 게임 종료여부 체크
+	bool isGameOver;
+
 public:
 	SceneGame();
 	virtual ~SceneGame() override;
@@ -35,8 +38,5 @@ public:
 	bool CheckWin(int player);
 	bool CheckDraw();
 	void ShowResult(int result);
-
-	// 게임 종료여부 체크
-	bool isGameOver;
 };
 

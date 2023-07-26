@@ -34,11 +34,6 @@ void SceneGame::Init()
 	background = CreateBackGround({ 5,5 }, { 50.f,50.f }, { 50.f,50.f }, "graphics/tile2.png");
 	AddGo(background);
 
-	for (auto go : gameObjects)
-	{
-		go->Init();
-	}
-
 	background->sortLayer = -1;
 	background->SetOrigin(Origins::TL);
 	background->SetPosition(0.f, 0.f);
@@ -59,6 +54,11 @@ void SceneGame::Init()
 			row.push_back(false);
 		}
 		tileStates.push_back(row);
+	}
+
+	for (auto go : gameObjects)
+	{
+		go->Init();
 	}
 }
 
@@ -318,7 +318,7 @@ bool SceneGame::CheckDraw()
 
 void SceneGame::ShowResult(int result)
 {
-	// 콘솔창 출력
+	// 콘솔창 출력(임시)
 	switch (result)
 	{
 	case 1:
