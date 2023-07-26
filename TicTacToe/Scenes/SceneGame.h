@@ -22,12 +22,12 @@ public:
 	virtual void Enter() override;
 	virtual void Exit() override;
 
+	virtual void Update(float dt)override;
+	virtual void Draw(sf::RenderWindow& window)override;
+
 	VertexArrayGo* CreateBackGround(sf::Vector2i size, sf::Vector2f tileSize, sf::Vector2f texSize, std::string textureId);
 
 	virtual void HandleClickEvent(sf::Vector2f clickPosition);
-
-	virtual void Update(float dt)override;
-	virtual void Draw(sf::RenderWindow& window)override;
 
 	VertexArrayGo* GetBackground();
 };
