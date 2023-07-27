@@ -45,6 +45,6 @@ public:
 	virtual void Update(float dt);
 	virtual void Draw(sf::RenderWindow& window);
 
-	virtual void HandleClickEvent(sf::Vector2f clickPosition);
+	virtual void ClickEvent(sf::Vector2f clickPosition);
 };
 

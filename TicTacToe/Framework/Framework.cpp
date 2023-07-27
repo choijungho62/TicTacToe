@@ -60,7 +60,7 @@ void Framework::Run()
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
 					sf::Vector2f clickPosition = window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
-					SCENE_MGR.GetCurrScene()->HandleClickEvent(clickPosition);
+					SCENE_MGR.GetCurrScene()->ClickEvent(clickPosition);
 				}
 				break;
             };

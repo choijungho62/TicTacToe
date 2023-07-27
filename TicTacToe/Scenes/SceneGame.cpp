@@ -10,7 +10,7 @@
 
 SceneGame::SceneGame() : Scene(SceneId::Game)
 {
-	resources.push_back(std::make_tuple(ResourceTypes::Texture, "graphics/tile2.png"));
+	resources.push_back(std::make_tuple(ResourceTypes::Texture, "graphics/tile.png"));
 	resources.push_back(std::make_tuple(ResourceTypes::Font, "fonts/KOMIKAP_.ttf"));
 	isGameOver = false;
 }
@@ -33,7 +33,7 @@ void SceneGame::Init()
 
 	sf::Vector2f tileWorldSize = { 50.f,50.f };
 	sf::Vector2f tileTexSize = { 50.f, 50.f };
-	background = CreateBackGround({ 5,5 }, { 50.f,50.f }, { 50.f,50.f }, "graphics/tile2.png");
+	background = CreateBackGround({ 5,5 }, { 50.f,50.f }, { 50.f,50.f }, "graphics/tile.png");
 	AddGo(background);
 
 	background->sortLayer = -1;
@@ -199,7 +199,7 @@ VertexArrayGo* SceneGame::CreateBackGround(sf::Vector2i size, sf::Vector2f tileS
 	return background;
 }
 
-void SceneGame::HandleClickEvent(sf::Vector2f clickPosition)
+void SceneGame::ClickEvent(sf::Vector2f clickPosition)
 {
 	if (isGameOver) // 게임이 종료되었다면 더 이상 타일 클릭 이벤트를 받지 않음
 		return;

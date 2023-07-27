@@ -32,7 +32,7 @@ public:
 
 	VertexArrayGo* CreateBackGround(sf::Vector2i size, sf::Vector2f tileSize, sf::Vector2f texSize, std::string textureId);
 
-	virtual void HandleClickEvent(sf::Vector2f clickPosition);
+	virtual void ClickEvent(sf::Vector2f clickPosition);
 
 	VertexArrayGo* GetBackground();
 

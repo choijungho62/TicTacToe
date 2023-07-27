@@ -130,6 +130,6 @@ void Scene::Draw(sf::RenderWindow& window)
 		}
 	}
 }
-void Scene::HandleClickEvent(sf::Vector2f clickPosition)
+void Scene::ClickEvent(sf::Vector2f clickPosition)
 {
 }
